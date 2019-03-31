@@ -4,7 +4,7 @@
   "description": "This is a web application for ...",
   "main": "index.js",
   "scripts": {
-    "start": "node ./backend/server.js"
+    "start": "source start_front.sh"
   },
   "repository": {
     "type": "git",

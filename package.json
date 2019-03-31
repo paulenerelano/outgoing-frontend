@@ -1,0 +1,26 @@
+{
+  "name": "outgoing",
+  "version": "1.0.0",
+  "description": "This is a web application for ...",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./backend/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/paulenerelano/outgoing.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/paulenerelano/outgoing/issues"
+  },
+  "homepage": "https://github.com/paulenerelano/outgoing#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "cors": "^2.8.5",
+    "express": "^4.16.4",
+    "mongoose": "^5.4.20"
+  }
+}

@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 
 app.listen(PORT, () => {
-    console.log("Server listening on port " + port);
+    console.log("Server listening on port " + PORT);
 });
 
 const outgoingRoutes = express.Router();

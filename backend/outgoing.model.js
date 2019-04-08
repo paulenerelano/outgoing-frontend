@@ -4,10 +4,10 @@ let Outgoing = new Schema({
     _id: {
         type: ObjectId
     },
-    description: {
+    name: {
         type: String
     },
-    title: {
+    description: {
         type: String
     },
     type: {

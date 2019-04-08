@@ -5,6 +5,7 @@ import logo from './logo.svg'
 
 import CreateEvent from "./views/CreateEvent";
 import ListEvent from "./views/ListEvent";
+import ViewDetails from "./views/ViewDetails";
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -30,7 +31,7 @@ const styles = {
 };
 
 class App extends Component {
-  
+
   render() {
     return (
       <Router>
@@ -44,9 +45,11 @@ class App extends Component {
           </Typography>
           <Button component={Link} to="/" color="inherit">Event List</Button>
           <Button component={Link} to="/create" color="inherit">Create Event</Button>
+          <Button component={Link} to="/details/1" color="inherit">Details Test</Button>
         </Toolbar>
       </AppBar>
         <div className="container">
+          <Route path="/details/1" exact component={ViewDetails} />
           <Route path="/create" exact component={CreateEvent} />
           <Route path="/" exact component={ListEvent} />
         </div>

@@ -2,17 +2,24 @@ const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cors = require('cors');
+const mongoose = require('mongoose');
 const PORT = process.env.PORT;
 
 app.use(cors());
 app.use(bodyParser.json());
 
+mongoose.connect('mongodb://127.0.0.1:27017/db_outgoing', { useNewUrlParser: true });
+const connection = mongoose.connection;
+connection.once('open', function() {
+    console.log("MongoDB database (db_outgoing) connection established successfully");
+})
+
 app.listen(PORT, () => {
-    console.log("Server listening on port " + PORT);
+    console.log("Outgoing server listening on port " + PORT);
 });
 
 const outgoingRoutes = express.Router();
-app.use('/outgoing', outgoingRoutes);
+app.use('/db_outgoing', outgoingRoutes);
 
 outgoingRoutes.route('/').get(function (req, res) {
     Outgoing.find(function (err, outgoing) {

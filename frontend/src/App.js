@@ -4,7 +4,7 @@ import './App.css';
 
 import CreateEvent from "./views/CreateEvent";
 import ListEvent from "./views/ListEvent";
-import ViewDetails from "./views/ViewDetails";
+import EventDetails from "./views/EventDetails";
 
 import PropTypes from 'prop-types';
 import { withStyles } from '@material-ui/core/styles';
@@ -28,9 +28,6 @@ import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import InboxIcon from '@material-ui/icons/MoveToInbox';
-
-
-
 
 const drawerWidth = 240;
 
@@ -140,7 +137,6 @@ class App extends Component {
             </Typography>
             <Typography className={classes.linkEvents} variant="h7" color="inherit" noWrap>
               <Button component={Link} to="/create" color="inherit">Create Event</Button>
-              <Button component={Link} to="/" color="inherit">Event List</Button>
             </Typography>
           </Toolbar>
         </AppBar>
@@ -168,6 +164,10 @@ class App extends Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="View Events" />
               </ListItem>
+              <ListItem button key="1" component={Link} to="/details">
+                <ListItemIcon><InboxIcon /></ListItemIcon>
+                <ListItemText primary="Event Details Tmp" />
+              </ListItem>
           </List>
           <Divider />
         </Drawer>
@@ -181,18 +181,11 @@ class App extends Component {
             <div className="container">
               <Route path="/create" exact component={CreateEvent} />
               <Route path="/" exact component={ListEvent} />
+              <Route path="/details" exact component={EventDetails} />
             </div>
           </Typography>
-          <Button component={Link} to="/" color="inherit">Event List</Button>
-          <Button component={Link} to="/create" color="inherit">Create Event</Button>
-          <Button component={Link} to="/details/1" color="inherit">Details Test</Button>
-        </Toolbar>
-      </AppBar>
-        <div className="container">
-          <Route path="/details/1" exact component={ViewDetails} />
-          <Route path="/create" exact component={CreateEvent} />
-          <Route path="/" exact component={ListEvent} />
-        </div>
+        </main>
+      </div>
       </Router>
     );
   }

@@ -1,6 +1,6 @@
 import React from 'react';
 import axios from 'axios';
-import 'date-fns';
+import "date-fns";
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,8 +12,9 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
+const config = require("../config/config.js");
 
-const BACK_URL = 'http://localhost:4000/outgoing';
+const BACK_URL = config.URL_BASE + '/event';
 
 class CreateEvent extends React.Component {
   state = {
@@ -46,6 +47,10 @@ class CreateEvent extends React.Component {
   };
 
   handleClose = () => {
+    this.props.history.push("/#/event/list/");
+  };
+
+  handleSubmit = () => {
     this.setState({ open: false });
 
     const newOutgoing = {
@@ -58,7 +63,10 @@ class CreateEvent extends React.Component {
     };
 
     axios.post(BACK_URL + '/add', newOutgoing)
-      .then(res => console.log(res.data));
+      .then(res => {
+        console.log(res.data)
+        this.props.history.push("/#/event/list/");
+      });
 
     this.setState({
       name: '',
@@ -79,87 +87,96 @@ class CreateEvent extends React.Component {
           aria-labelledby="form-dialog-title"
         >
           <DialogTitle id="form-dialog-title">Post Event</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Bring people together with a public event.
-            </DialogContentText>
-            <TextField
-              autoFocus
-              margin="dense"
-              id="name"
-              label="Name"
-              value={this.state.name}
-              onChange={this.handleChange('name')}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="summary"
-              label="Summary"
-              value={this.state.summary}
-              onChange={this.handleChange('summary')}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="location"
-              label="Location"
-              value={this.state.location}
-              onChange={this.handleChange('location')}
-              fullWidth
-            />
-            <TextField
-              autoFocus
-              margin="dense"
-              id="description"
-              label="Description"
-              fullWidth
-              multiline
-              rows="3"
-              margin="normal"
-              value={this.state.description}
-              onChange={this.handleChange('description')}
-            />
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid container justify="space-around" fullWidth>
-                <DatePicker
-                  margin="normal"
-                  label="Start Date"
-                  value={this.state.startdate}
-                  onChange={this.handleStartDateChange}
-                />
-                <TimePicker
-                  margin="normal"
-                  label="Start Time"
-                  value={this.state.startdate}
-                  onChange={this.handleStartDateChange}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
-            <MuiPickersUtilsProvider utils={DateFnsUtils}>
-              <Grid container justify="space-around" fullWidth>
-                <DatePicker
-                  margin="normal"
-                  label="End Date"
-                  value={this.state.enddate}
-                  onChange={this.handleEndDateChange}
-                />
-                <TimePicker
-                  margin="normal"
-                  label="End Time"
-                  value={this.state.enddate}
-                  onChange={this.handleEndDateChange}
-                />
-              </Grid>
-            </MuiPickersUtilsProvider>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={this.handleClose} color="primary">
-              Create
+          <form id="eventId"
+            className="form-add"
+            validate="true"
+            autoComplete="off"
+            onSubmit={this.handleSubmit}>
+            <DialogContent>
+              <DialogContentText>
+                Bring people together with a public event.
+              </DialogContentText>
+              <TextField
+                required
+                autoFocus
+                margin="dense"
+                id="name"
+                label="Name"
+                value={this.state.name}
+                onChange={this.handleChange('name')}
+                fullWidth
+              />
+              <TextField
+                required
+                margin="dense"
+                id="summary"
+                label="Summary"
+                value={this.state.summary}
+                onChange={this.handleChange('summary')}
+                fullWidth
+              />
+              <TextField
+                required
+                margin="dense"
+                id="location"
+                label="Location"
+                value={this.state.location}
+                onChange={this.handleChange('location')}
+                fullWidth
+              />
+              <TextField
+                required
+                margin="dense"
+                id="description"
+                label="Description"
+                fullWidth
+                multiline
+                rows="3"
+                value={this.state.description}
+                onChange={this.handleChange('description')}
+              />
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around" fullWidth>
+                  <DatePicker
+                    margin="normal"
+                    label="Start Date"
+                    value={this.state.startdate}
+                    onChange={this.handleStartDateChange}
+                  />
+                  <TimePicker
+                    margin="normal"
+                    label="Start Time"
+                    value={this.state.startdate}
+                    onChange={this.handleStartDateChange}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+              <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                <Grid container justify="space-around" fullWidth>
+                  <DatePicker
+                    margin="normal"
+                    label="End Date"
+                    value={this.state.enddate}
+                    onChange={this.handleEndDateChange}
+                  />
+                  <TimePicker
+                    margin="normal"
+                    label="End Time"
+                    value={this.state.enddate}
+                    onChange={this.handleEndDateChange}
+                  />
+                </Grid>
+              </MuiPickersUtilsProvider>
+            </DialogContent>
+            <DialogActions>
+              <Button onClick={this.handleClose} color="primary">
+                Cancel
               </Button>
-          </DialogActions>
+              <Button type="submit" color="primary">
+                Create
+              </Button>
+            </DialogActions>
+          </form>
         </Dialog>
       </div>
     );

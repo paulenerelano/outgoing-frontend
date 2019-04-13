@@ -135,7 +135,7 @@ class App extends Component {
             <Typography variant="h6" color="inherit" noWrap>
               OutGoing
             </Typography>
-            <Typography className={classes.linkEvents} variant="h7" color="inherit" noWrap>
+            <Typography className={classes.linkEvents} variant="h6" color="inherit" noWrap>
               <Button component={Link} to="/create" color="inherit">Create Event</Button>
             </Typography>
           </Toolbar>
@@ -164,7 +164,7 @@ class App extends Component {
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="View Events" />
               </ListItem>
-              <ListItem button key="1" component={Link} to="/details">
+              <ListItem button key="2" component={Link} to="/details">
                 <ListItemIcon><InboxIcon /></ListItemIcon>
                 <ListItemText primary="Event Details Tmp" />
               </ListItem>
@@ -177,13 +177,13 @@ class App extends Component {
           })}
         >
           <div className={classes.drawerHeader} />
-          <Typography paragraph>
+          <div>
             <div className="container">
               <Route path="/create" exact component={CreateEvent} />
               <Route path="/" exact component={ListEvent} />
               <Route path="/details" exact component={EventDetails} />
             </div>
-          </Typography>
+          </div>
         </main>
       </div>
       </Router>

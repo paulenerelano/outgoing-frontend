@@ -1,87 +1,59 @@
 import React, { Component } from 'react';
 import EventItem from './EventItem';
+import PropTypes from 'prop-types';
+import { withStyles } from '@material-ui/core/styles';
+import Grid from '@material-ui/core/Grid';
+
+const apiInterface = require("../api/eventapi.js")();
+
+const styles = theme => ({
+  root: {
+    flexGrow: 1,
+  },
+  paper: {
+    padding: theme.spacing.unit * 2,
+    textAlign: 'center',
+    color: theme.palette.text.secondary,
+  },
+});
 
 
 class ListEvent extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {events: []};
+  }
+
+  componentDidMount() {
+    
+    var retVal = apiInterface.getAllEvents();
+    retVal.then(response => {
+      this.setState({ events: response.data });
+    })
+    .catch(function (error){
+      console.log(error);
+    })
+  }
+
   render() {
     return (
-        <div>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Gene's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Toby's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-          <EventItem 
-            name="Miko's Event"
-            date="2019-04-05"
-            description="Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum Lorem ipsum "/>
-
-        </div>
+      <Grid container spacing={24}>
+        {this.state.events.map((event, index) => (
+            <EventItem
+              key={index}
+              name={event.name}
+              date={event.startdate}
+              location={event.location}
+              summary={event.summary}
+              image="event.jpg"/>
+          ))}
+        </Grid>
     )
   }
 }
 
-export default ListEvent;
+ListEvent.propTypes = {
+  classes: PropTypes.object.isRequired,
+};
+
+export default withStyles(styles)(ListEvent);

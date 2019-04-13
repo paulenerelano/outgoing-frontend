@@ -38,7 +38,7 @@ class ListEvent extends Component {
 
     return (
       <Grid container spacing={24}>
-        {this.state.events === undefined  || this.state.events.length? 
+        {this.state.events === undefined  || !this.state.events.length? 
           "No Items to show" :
           this.state.events.map((event, index) => (
             <EventItem

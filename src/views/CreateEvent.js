@@ -1,6 +1,6 @@
 import React from 'react';
-import axios from 'axios';
 import "date-fns";
+import { withStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
@@ -12,21 +12,27 @@ import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
-const config = require("../config/config.js");
 
-const BACK_URL = config.URL_BASE + '/event';
+const apiInterface = require("../api/eventapi.js")();
+
+
+const styles = theme => ({
+});
 
 class CreateEvent extends React.Component {
-  state = {
-    name: '',
-    summary: '',
-    description: '',
-    location: '',
-    startdate: new Date('2019-04-09T21:11:54'),
-    enddate: new Date('2014-04-10T21:11:54'),
-    duration: 0,
-    open: true,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      name: '',
+      summary: '',
+      description: '',
+      location: '',
+      startdate: new Date('2019-04-09T21:11:54'),
+      enddate: new Date('2014-04-10T21:11:54'),
+      duration: 0,
+      open: true,
+    };
+  }
 
   handleChange = name => event => {
     this.setState({
@@ -50,8 +56,11 @@ class CreateEvent extends React.Component {
     this.props.history.push("/#/event/list/");
   };
 
-  handleSubmit = () => {
-    this.setState({ open: false });
+  handleSubmit = (e) => {
+
+    e.preventDefault();
+    // this.setState({ open: false });
+    console.log("-----------------------------------------" + this.state.name)
 
     const newOutgoing = {
       name: this.state.name,
@@ -62,20 +71,14 @@ class CreateEvent extends React.Component {
       enddate: this.state.enddate
     };
 
-    axios.post(BACK_URL + '/add', newOutgoing)
-      .then(res => {
-        console.log(res.data)
-        this.props.history.push("/#/event/list/");
-      });
-
-    this.setState({
-      name: '',
-      description: '',
-      location: '',
-      summary: '',
-      startdate: new Date('2019-04-09T21:11:54'),
-      enddate: new Date('2014-04-10T21:11:54')
+    var retVal = apiInterface.createEvent(newOutgoing);
+    retVal.then(response => {
+      this.props.history.push("/#/event/list/");
     })
+    .catch(function (error){
+      console.log(error);
+    })
+
   };
 
   render() {
@@ -104,7 +107,7 @@ class CreateEvent extends React.Component {
                 label="Name"
                 value={this.state.name}
                 onChange={this.handleChange('name')}
-                fullWidth
+                fullWidth={true}
               />
               <TextField
                 required
@@ -113,7 +116,7 @@ class CreateEvent extends React.Component {
                 label="Summary"
                 value={this.state.summary}
                 onChange={this.handleChange('summary')}
-                fullWidth
+                fullWidth={true}
               />
               <TextField
                 required
@@ -122,21 +125,21 @@ class CreateEvent extends React.Component {
                 label="Location"
                 value={this.state.location}
                 onChange={this.handleChange('location')}
-                fullWidth
+                fullWidth={true}
               />
               <TextField
                 required
                 margin="dense"
                 id="description"
                 label="Description"
-                fullWidth
+                fullWidth={true}
                 multiline
                 rows="3"
                 value={this.state.description}
                 onChange={this.handleChange('description')}
               />
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around" fullWidth>
+                <Grid container justify="space-around" fullWidth={true}>
                   <DatePicker
                     margin="normal"
                     label="Start Date"
@@ -152,7 +155,7 @@ class CreateEvent extends React.Component {
                 </Grid>
               </MuiPickersUtilsProvider>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                <Grid container justify="space-around" fullWidth>
+                <Grid container justify="space-around" fullWidth={true}>
                   <DatePicker
                     margin="normal"
                     label="End Date"
@@ -186,4 +189,5 @@ CreateEvent.propTypes = {
   classes: PropTypes.object.isRequired,
 };
 
-export default CreateEvent
+
+export default withStyles(styles)(CreateEvent);

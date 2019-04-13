@@ -25,7 +25,6 @@ class ListEvent extends Component {
   }
 
   componentDidMount() {
-    
     var retVal = apiInterface.getAllEvents();
     retVal.then(response => {
       this.setState({ events: response.data });
@@ -36,9 +35,12 @@ class ListEvent extends Component {
   }
 
   render() {
+
     return (
       <Grid container spacing={24}>
-        {this.state.events.map((event, index) => (
+        {this.state.events === undefined  || this.state.events.length? 
+          "No Items to show" :
+          this.state.events.map((event, index) => (
             <EventItem
               key={index}
               name={event.name}
@@ -46,7 +48,7 @@ class ListEvent extends Component {
               location={event.location}
               summary={event.summary}
               image="event.jpg"/>
-          ))}
+          )) }
         </Grid>
     )
   }

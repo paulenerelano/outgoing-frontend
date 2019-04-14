@@ -4,10 +4,8 @@ const config = require("../config/config.js");
 
 const BASE_URL = config.HTTP_TAG + config.IP_ADDRESS + config.PORT + "/event";
 
-
-
 module.exports = function() {
-  
+
   return {
     getAllEvents: function() {
       return axios.get(BASE_URL + "/list")
@@ -15,6 +13,17 @@ module.exports = function() {
           return response;
         })
         .catch(error => {
+          return error;
+        });
+    },
+
+    getEventDetails: function(id) {
+      return axios.get(BASE_URL + "/viewEvent/"+ id )
+        .then(response => {
+          return response;
+        })
+        .catch(error => {
+          console.log(error)
           return error;
         });
     },

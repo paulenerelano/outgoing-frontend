@@ -5,6 +5,8 @@ import Grid from '@material-ui/core/Grid';
 import Jumbotron from 'react-bootstrap/Jumbotron'
 import './EventDetails.css';
 
+const apiInterface = require("../api/eventapi.js")();
+
 const details = {
     eventName : "Umbrella Academy Hackathon",
     description : "Come on let's go to umbrella academy hackathon",
@@ -26,34 +28,50 @@ const jumboStyle = {
 export default class EventDetails extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            id: "5cb1caed15319300178c2f55",
+            eventName : "Umbrella Academy Hackathon",
+            description : "Come on let's go to umbrella academy hackathon",
+            pitch : "Come on let's go!! Pitchy pitchy pitch",
+            date : "2019-06-12",
+            location : "Mandaluyong City",
+            numAttendees : 20,
+            image : "/images/tmp.JPG",};
+
     }
     componentDidMount() {
-        // axios.get(process.env.PUBLIC_URL + '/todos/')
-        //     .then(response => {
-        //         this.eventDetails = JSON.parse(response.data);
-        //     })
-        //     .catch(function (error){
-        //         console.log(error);
-        //     })
+      var retVal = apiInterface.getEventDetails(this.state.id);
+      retVal.then(response => {
+        if(response.length > 0){
+          this.setState({
+          eventName :response.data.name,
+          location : response.data.location,
+          description : response.data.description,
+          pitch : response.data.pitch});
+        }
+      })
+      .catch(function (error){
+        console.log(error);
+      })
     }
     render() {
         return (
             <div>
                 <Jumbotron style={jumboStyle} fluid className="event-jumbotron">
-                    <h1>{details.eventName}</h1>
+                    <h1>{this.state.eventName}</h1>
                     <p>
-                      {details.pitch}
+                      {this.state.pitch}
                     </p>
                 </Jumbotron>
                 <Grid container spacing={24}>
                     <Grid item xs={6}>
-                        <Paper className="eventName">{details.date}</Paper>
+                        <Paper className="eventName">{this.state.date}</Paper>
                     </Grid>
                     <Grid item xs={6}>
-                        <Paper className="eventName">{details.location}</Paper>
+                        <Paper className="eventName">{this.state.location}</Paper>
                     </Grid>
                     <Grid item xs={12}>
-                        <Paper className="eventName">{details.description}</Paper>
+                        <Paper className="eventName">{this.state.description}</Paper>
                     </Grid>
                 </Grid>
             </div>

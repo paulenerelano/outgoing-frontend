@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Jumbotron from 'react-bootstrap/Jumbotron'
@@ -30,7 +29,7 @@ export default class EventDetails extends Component {
         super(props);
         this.state = {
             id: "5cb1caed15319300178c2f55",
-            eventName : "Umbrella Academy Hackathon",
+            eventName : "",
             description : "Come on let's go to umbrella academy hackathon",
             pitch : "Come on let's go!! Pitchy pitchy pitch",
             date : "2019-06-12",
@@ -39,16 +38,18 @@ export default class EventDetails extends Component {
             image : "/images/tmp.JPG",};
 
     }
+
+
     componentDidMount() {
-      var retVal = apiInterface.getEventDetails(this.state.id);
+      var retVal = apiInterface.getEventDetails(this.props.match.params.id);
       retVal.then(response => {
-        if(response.length > 0){
+          console.log(response.data)
           this.setState({
+          id: response.data._id,
           eventName :response.data.name,
           location : response.data.location,
           description : response.data.description,
           pitch : response.data.pitch});
-        }
       })
       .catch(function (error){
         console.log(error);

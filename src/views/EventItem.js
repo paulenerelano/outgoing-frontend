@@ -36,13 +36,16 @@ class EventItem extends Component{
     return (
         <Grid item xs={12} sm={4}>
           <Paper className={classes.paper}>
+            
             <span className={classes.mediaContainer}>
             <img className={classes.media} src={this.props.image} alt="Logo"/>
             </span>
+            <div onClick={this.props.detailshandler}>
             <h2>{this.props.name}</h2>
             <p>{dateVal}</p>
             <p>{this.props.summary}</p>
             <p className={classes.location}>{this.props.location}</p>
+            </div>
           </Paper>
         </Grid>
     )

@@ -13,11 +13,33 @@ import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import { MuiPickersUtilsProvider, TimePicker, DatePicker } from 'material-ui-pickers';
 
+import Typography from '@material-ui/core/Typography';
+
+import Modal from '@material-ui/core/Modal';
+import CircularProgress from '@material-ui/core/CircularProgress';
+
 const apiInterface = require("../api/eventapi.js")();
 
 
+function getModalStyle() {
+  return {
+    top: "50%",
+    left: "50%",
+    transform: "translate(-50%, -50%)",
+  };
+}
+
 const styles = theme => ({
+  paper: {
+    position: 'absolute',
+    width: theme.spacing.unit * 50,
+    backgroundColor: theme.palette.background.paper,
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing.unit * 4,
+    outline: 'none',
+  },
 });
+
 
 class CreateEvent extends React.Component {
   constructor(props) {
@@ -31,6 +53,7 @@ class CreateEvent extends React.Component {
       enddate: new Date('2014-04-10T21:11:54'),
       duration: 0,
       open: true,
+      openLoading: false,
     };
   }
 
@@ -56,9 +79,18 @@ class CreateEvent extends React.Component {
     this.props.history.push("/#/event/list/");
   };
 
+  handleLoadingOpen = () => {
+    this.setState({ openLoading: true });
+  };
+
+  handleLoadingClose = () => {
+    this.setState({ openLoading: false });
+  };
+
   handleSubmit = (e) => {
 
     e.preventDefault();
+    this.handleLoadingOpen();
     // this.setState({ open: false });
     console.log("-----------------------------------------" + this.state.name)
 
@@ -73,17 +105,35 @@ class CreateEvent extends React.Component {
 
     var retVal = apiInterface.createEvent(newOutgoing);
     retVal.then(response => {
+      this.handleLoadingClose();
       this.props.history.push("/#/event/list/");
     })
     .catch(function (error){
+      this.handleLoadingClose();
       console.log(error);
     })
 
   };
 
   render() {
+    const { classes } = this.props;
     return (
       <div>
+        <Modal
+          aria-labelledby="simple-modal-title"
+          aria-describedby="simple-modal-description"
+          open={this.state.openLoading}
+          onClose={this.handleLoadingClose}
+        >
+          <div style={getModalStyle()} className={classes.paper}>
+            <Typography variant="h6" id="modal-title">
+              <center><CircularProgress disableShrink /></center>
+            </Typography>
+            <Typography variant="subtitle1" id="simple-modal-description">
+              <center>Submitting event...</center>
+            </Typography>
+          </div>
+        </Modal>
         <Dialog
           open={this.state.open}
           onClose={this.handleClose}
